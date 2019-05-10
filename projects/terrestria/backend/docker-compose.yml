@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./db/:/docker-entrypoint-initdb.d
+  web:
+    build: ./terrestria
+    command: ./entrypoint.sh
+    volumes:
+      - ./terrestria:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  web_demo:
+    build: ./ter-adver-demo
+    command: ./entrypoint.sh
+    volumes:
+      - ./ter-adver-demo:/code
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
